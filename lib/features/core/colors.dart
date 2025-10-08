@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const Color primaryColor = Color.fromARGB(255, 149, 233, 66);
-const Color colorProduct = Color(0xFFFF9900);
+const Color primaryColor = Color.fromARGB(255, 66, 152, 233);
+const Color colorProduct = Color.fromARGB(255, 66, 152, 233);
 const Color secondaryColor = Color(0xFF4E342E);
 const Color appTitleColor = Color(0xFF4E342E);
 const Color whiteColor = Colors.white;

@@ -247,7 +247,7 @@ class CategoryScreenContent extends StatelessWidget {
         if (productState is ProductLoaded) {
           context.read<FilterBloc>().add(
             UpdateFilterCriteria(
-              categories: [category], // already passed as param
+              categories: [category],  
               sortOption: 'Favorites First',
             ),
           );

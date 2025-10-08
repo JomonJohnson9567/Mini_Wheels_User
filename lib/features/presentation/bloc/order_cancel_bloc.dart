@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,45 +81,67 @@ class OrderCancelBloc extends Bloc<OrderCancelEvent, OrderCancelState> {
         throw Exception('User not authenticated');
       }
 
-      print('🔥 BLoC: User ID: $userId');
+      if (kDebugMode) {
+        print('🔥 BLoC: User ID: $userId');
+      }
 
-      print('🔥 BLoC: Fetching order details...');
+      if (kDebugMode) {
+        print('🔥 BLoC: Fetching order details...');
+      }
       final order = await orderRepository.getOrderById(event.orderId);
       if (order == null) {
         throw Exception('Order not found');
       }
-      print(
+      if (kDebugMode) {
+        print(
         '✅ BLoC: Order details fetched - Product: ${order.product.id}, Quantity: ${order.quantity}',
       );
+      }
 
-      print('🔥 BLoC: Updating order status to cancelled...');
+      if (kDebugMode) {
+        print('🔥 BLoC: Updating order status to cancelled...');
+      }
       await orderRepository.updateOrderStatus(event.orderId, 'cancelled', null);
-      print('✅ BLoC: Order status updated successfully');
+      if (kDebugMode) {
+        print('✅ BLoC: Order status updated successfully');
+      }
 
-      print('🔥 BLoC: Restoring product stock...');
+      if (kDebugMode) {
+        print('🔥 BLoC: Restoring product stock...');
+      }
       await productRepository.increaseProductStock(
         order.product.id,
         order.quantity,
       );
-      print('✅ BLoC: Product stock restored (+${order.quantity} units)');
+      if (kDebugMode) {
+        print('✅ BLoC: Product stock restored (+${order.quantity} units)');
+      }
 
-      print('🔥 BLoC: Processing wallet refund...');
+      if (kDebugMode) {
+        print('🔥 BLoC: Processing wallet refund...');
+      }
       await walletRepository.addMoney(
         userId,
         event.refundAmount,
         'Refund for cancelled order #${event.orderId.substring(event.orderId.length - 6)}',
         orderId: event.orderId,
       );
-      print('✅ BLoC: Wallet refund processed successfully');
+      if (kDebugMode) {
+        print('✅ BLoC: Wallet refund processed successfully');
+      }
 
       emit(
         OrderCancelSuccess(
           'Order cancelled successfully! Stock restored and refund added to wallet.',
         ),
       );
-      print('✅ BLoC: Cancel order process completed with stock restoration');
+      if (kDebugMode) {
+        print('✅ BLoC: Cancel order process completed with stock restoration');
+      }
     } catch (e) {
-      print('❌ BLoC: Cancel order failed: $e');
+      if (kDebugMode) {
+        print('❌ BLoC: Cancel order failed: $e');
+      }
       emit(OrderCancelError('Failed to cancel order: ${e.toString()}'));
     }
   }

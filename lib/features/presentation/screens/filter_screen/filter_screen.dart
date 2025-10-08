@@ -22,9 +22,8 @@ class FilterScreen extends StatelessWidget {
     final filterBloc = context.read<FilterBloc>();
 
     return BlocListener<FilterBloc, FilterState>(
-      listenWhen:
-          (prev, curr) =>
-              prev.minPrice != curr.minPrice || prev.maxPrice != curr.maxPrice,
+      listenWhen: (prev, curr) =>
+          prev.minPrice != curr.minPrice || prev.maxPrice != curr.maxPrice,
       listener: (context, state) {
         context.read<PriceSliderCubit>().updateRange(
           state.minPrice,
@@ -125,13 +124,12 @@ class FilterScreen extends StatelessWidget {
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
-                        builder:
-                            (_) => BlocProvider.value(
-                              value: filterBloc,
-                              child: SortBottomSheet(
-                                selectedOption: state.sortOption,
-                              ),
-                            ),
+                        builder: (_) => BlocProvider.value(
+                          value: filterBloc,
+                          child: SortBottomSheet(
+                            selectedOption: state.sortOption,
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -155,36 +153,32 @@ class FilterScreen extends StatelessWidget {
             builder: (context, state) {
               return ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: primaryColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                onPressed:
-                    state.status == FilterStatus.loading
-                        ? null
-                        : () => _applyFiltersAndNavigate(context),
-                child:
-                    state.status == FilterStatus.loading
-                        ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              whiteColor,
-                            ),
-                          ),
-                        )
-                        : const Text(
-                          "Apply",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
+                onPressed: state.status == FilterStatus.loading
+                    ? null
+                    : () => _applyFiltersAndNavigate(context),
+                child: state.status == FilterStatus.loading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(whiteColor),
                         ),
+                      )
+                    : const Text(
+                        "Apply",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
               );
             },
           ),
@@ -209,11 +203,10 @@ class FilterScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder:
-            (_) => BlocProvider.value(
-              value: filterBloc,
-              child: const FilteredProductListScreen(),
-            ),
+        builder: (_) => BlocProvider.value(
+          value: filterBloc,
+          child: const FilteredProductListScreen(),
+        ),
       ),
     );
   }
@@ -263,30 +256,28 @@ class FilterScreen extends StatelessWidget {
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children:
-                      selectedCategories.map((category) {
-                        return InputChip(
-                          label: Text(category),
-                          backgroundColor: primaryColor,
-                          labelStyle: const TextStyle(
-                            color: whiteColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          deleteIcon: const Icon(Icons.close, size: 16),
-                          onDeleted: () {
-                            final updated = List<String>.from(
-                              selectedCategories,
-                            )..remove(category);
-                            filterBloc.add(
-                              UpdateFilterCriteria(categories: updated),
-                            );
-                          },
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: const BorderSide(color: primaryColor),
-                          ),
+                  children: selectedCategories.map((category) {
+                    return InputChip(
+                      label: Text(category),
+                      backgroundColor: primaryColor,
+                      labelStyle: const TextStyle(
+                        color: whiteColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      deleteIcon: const Icon(Icons.close, size: 16),
+                      onDeleted: () {
+                        final updated = List<String>.from(selectedCategories)
+                          ..remove(category);
+                        filterBloc.add(
+                          UpdateFilterCriteria(categories: updated),
                         );
-                      }).toList(),
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: const BorderSide(color: primaryColor),
+                      ),
+                    );
+                  }).toList(),
                 ),
             ],
           ),
@@ -301,18 +292,17 @@ class FilterScreen extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder:
-          (_) => BlocProvider.value(
-            value: categoryBloc,
-            child: CategorySelectionDialog(
-              initiallySelected: selected,
-              onApply: (newSelected) {
-                context.read<FilterBloc>().add(
-                  UpdateFilterCriteria(categories: newSelected),
-                );
-              },
-            ),
-          ),
+      builder: (_) => BlocProvider.value(
+        value: categoryBloc,
+        child: CategorySelectionDialog(
+          initiallySelected: selected,
+          onApply: (newSelected) {
+            context.read<FilterBloc>().add(
+              UpdateFilterCriteria(categories: newSelected),
+            );
+          },
+        ),
+      ),
     );
   }
 }

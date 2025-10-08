@@ -9,7 +9,6 @@ import 'package:mini_wheelz_user/features/presentation/bloc/product_event.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/filter_screen/filter_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/search_screen/widgets/search_field.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/search_screen/widgets/search_results.dart';
- 
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -71,10 +70,7 @@ class _SearchPageState extends State<SearchPage> {
                       width: 50,
                       decoration: BoxDecoration(
                         color: primaryColor,
-                        border: Border.all(
-                          color: const Color(0xFFFF9900),
-                          width: 1.5,
-                        ),
+                        border: Border.all(color: primaryColor, width: 1.5),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -109,11 +105,10 @@ class _SearchPageState extends State<SearchPage> {
                                   providers: [
                                     BlocProvider.value(value: filterBloc),
                                     BlocProvider(
-                                      create:
-                                          (_) => PriceSliderCubit(
-                                            filterBloc.state.minPrice,
-                                            filterBloc.state.maxPrice,
-                                          ),
+                                      create: (_) => PriceSliderCubit(
+                                        filterBloc.state.minPrice,
+                                        filterBloc.state.maxPrice,
+                                      ),
                                     ),
                                   ],
                                   child: const FilterScreen(),

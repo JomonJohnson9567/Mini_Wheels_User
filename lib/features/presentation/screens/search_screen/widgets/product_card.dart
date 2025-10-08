@@ -4,7 +4,6 @@ import 'package:mini_wheelz_user/features/core/colors.dart';
 import 'package:mini_wheelz_user/features/domain/entity/product_entity.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/product_details.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/product_details/product_details_screen.dart';
- 
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
@@ -19,7 +18,7 @@ class ProductCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Color(0xFFFF9900), width: 1.2),
+        side: const BorderSide(color: primaryColor, width: 1.2),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(12),
@@ -54,11 +53,10 @@ class ProductCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder:
-                  (_) => BlocProvider(
-                    create: (_) => ProductDetailBloc(),
-                    child: ProductDetailPage(product: product),
-                  ),
+              builder: (_) => BlocProvider(
+                create: (_) => ProductDetailBloc(),
+                child: ProductDetailPage(product: product),
+              ),
             ),
           );
         },

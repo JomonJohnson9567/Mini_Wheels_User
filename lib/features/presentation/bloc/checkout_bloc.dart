@@ -160,7 +160,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         'key': 'rzp_test_zGUWcHp8eqJukI',
         'amount': (grandTotal * 100).toInt(),
         'currency': 'INR',
-        'name': 'Petzy',
+        'name': 'Mini Wheelz',
         'description': 'Cart Checkout - ${cartState.items.length} items',
         'prefill': {'contact': contact, 'email': email, 'name': name},
         'theme': {'color': '#EF8A45'},

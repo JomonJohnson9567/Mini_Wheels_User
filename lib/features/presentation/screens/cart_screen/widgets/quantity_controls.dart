@@ -7,18 +7,16 @@ import 'package:mini_wheelz_user/features/presentation/bloc/cart_event.dart';
 
 class QuantityControls extends StatelessWidget {
   final dynamic item;
-  final int? maxStock; // Add this parameter to pass stock from parent
-
+  final int? maxStock;  
   const QuantityControls({
     super.key,
     required this.item,
-    this.maxStock, // Pass stock from parent widget
+    this.maxStock,  
   });
 
   @override
   Widget build(BuildContext context) {
-    // Use maxStock parameter instead of trying to get it from item
-    final int availableStock =
+     final int availableStock =
         maxStock ?? 999; // Default to 999 if no stock provided
     final bool canIncrease = item.quantity < availableStock;
 

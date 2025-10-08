@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
+// ignore: unnecessary_import
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +11,6 @@ import 'package:mini_wheelz_user/features/presentation/bloc/cubit/price_slider_c
 import 'package:mini_wheelz_user/features/presentation/bloc/filter_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/filter_event.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/product_bloc.dart';
- 
 
 class PriceSlider extends StatelessWidget {
   final double absoluteMax;
@@ -108,8 +110,8 @@ class PriceSlider extends StatelessWidget {
                       inactiveTrackColor: Colors.orange.shade100,
                       thumbColor: whiteColor,
                       trackHeight: 6,
-                      overlayColor: Colors.orange.withOpacity(0.2),
-                      valueIndicatorColor: Colors.orange,
+                      overlayColor: primaryColor.withOpacity(0.2),
+                      valueIndicatorColor: primaryColor,
                       valueIndicatorTextStyle: const TextStyle(
                         color: Colors.white,
                       ),
@@ -143,10 +145,9 @@ class PriceSlider extends StatelessWidget {
                         Future.delayed(const Duration(milliseconds: 300), () {
                           final productBloc = context.read<ProductBloc>();
                           final favoritesCubit = context.read<FavoritesCubit>();
-                          final favoriteIds =
-                              favoritesCubit.state
-                                  .map((e) => e.productId)
-                                  .toList();
+                          final favoriteIds = favoritesCubit.state
+                              .map((e) => e.productId)
+                              .toList();
 
                           filterBloc.add(
                             ApplyFilters(
@@ -186,7 +187,7 @@ class PriceSlider extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [primaryColor, Colors.pink],
+          colors: [primaryColor, primaryColor.withOpacity(0.7)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

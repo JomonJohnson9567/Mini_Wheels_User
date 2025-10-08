@@ -125,7 +125,7 @@ class ProductGridCard extends StatelessWidget {
                 },
                 child: Icon(
                   isFav ? Icons.favorite : Icons.favorite_border,
-                  color: isFav ? redColor : whiteColor,
+                  color: isFav ? redColor : blackColor,
                   size: 20,
                 ),
               );

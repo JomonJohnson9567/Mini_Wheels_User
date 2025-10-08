@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_wheelz_user/features/core/colors.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/product_details.dart';
- 
+
 class ProductImageCarousel extends StatelessWidget {
   final List<String> imageUrls;
   final PageController pageController;
@@ -26,18 +27,14 @@ class ProductImageCarousel extends StatelessWidget {
             PageView.builder(
               controller: pageController,
               itemCount: imageUrls.length,
-              onPageChanged:
-                  (index) => context.read<ProductDetailBloc>().add(
-                    UpdatePageIndex(index),
-                  ),
+              onPageChanged: (index) =>
+                  context.read<ProductDetailBloc>().add(UpdatePageIndex(index)),
               itemBuilder: (context, index) {
                 return Image.network(
                   imageUrls[index],
                   fit: BoxFit.cover,
-                  errorBuilder:
-                      (_, __, ___) => const Center(
-                        child: Icon(Icons.broken_image, size: 100),
-                      ),
+                  errorBuilder: (_, __, ___) =>
+                      const Center(child: Icon(Icons.broken_image, size: 100)),
                 );
               },
             ),
@@ -54,10 +51,9 @@ class ProductImageCarousel extends StatelessWidget {
                       height: 8,
                       width: currentPage == index ? 16 : 8,
                       decoration: BoxDecoration(
-                        color:
-                            currentPage == index
-                                ? Colors.orange
-                                : Colors.orange.withOpacity(0.4),
+                        color: currentPage == index
+                            ? primaryColor
+                            : primaryColor.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),

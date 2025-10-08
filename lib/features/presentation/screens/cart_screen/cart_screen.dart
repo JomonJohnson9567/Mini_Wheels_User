@@ -28,7 +28,7 @@ class CartScreen extends StatelessWidget {
                 ? const EmptyCartWidget()
                 : CartContent(
                   state: state,
-                ); // 👈 Removed Column wrapper and checkout button
+                ); 
           }
           return const UnknownErrorWidget();
         },

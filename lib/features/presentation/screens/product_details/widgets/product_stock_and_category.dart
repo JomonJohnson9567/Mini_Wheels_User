@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mini_wheelz_user/features/core/colors.dart';
 import 'package:mini_wheelz_user/features/domain/entity/product_entity.dart';
- 
+
 class ProductStockAndCategory extends StatelessWidget {
   final ProductEntity product;
 
@@ -17,7 +18,7 @@ class ProductStockAndCategory extends StatelessWidget {
             Text(
               product.quantity > 0 ? "In stock" : "Out of stock",
               style: TextStyle(
-                color: product.quantity > 0 ? Colors.orange : Colors.red,
+                color: product.quantity > 0 ? primaryColor : Colors.red,
                 fontWeight: FontWeight.bold,
               ),
             ),
