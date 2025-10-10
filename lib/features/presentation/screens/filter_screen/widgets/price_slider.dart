@@ -116,6 +116,7 @@ class PriceSlider extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+                    
                     child: RangeSlider(
                       values: RangeValues(
                         sliderState.minPrice,
