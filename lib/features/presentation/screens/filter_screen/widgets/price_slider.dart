@@ -198,7 +198,7 @@ class PriceSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: [  
           Text(
             isMin ? "Min" : "Max",
             style: TextStyle(
