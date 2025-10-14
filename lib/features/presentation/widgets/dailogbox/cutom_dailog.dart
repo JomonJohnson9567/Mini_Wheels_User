@@ -87,7 +87,7 @@ class CustomPrivacyPolicyDialog {
               child: SingleChildScrollView(
                 child: const Text(
                   '''
-At Petzy, we value your privacy and are committed to protecting your personal information. 
+At Mini Wheelz, we value your privacy and are committed to protecting your personal information. 
 
 1. Information We Collect
    - Personal details you provide (name, email, etc.)
@@ -110,7 +110,7 @@ At Petzy, we value your privacy and are committed to protecting your personal in
    - You may request deletion of your data at any time
    - You have control over what information you share
 
-For any privacy-related concerns, please contact us at: support@petzy.com
+For any privacy-related concerns, please contact us at: support@miniwheelz.com
               ''',
                   style: TextStyle(
                     fontSize: 14,

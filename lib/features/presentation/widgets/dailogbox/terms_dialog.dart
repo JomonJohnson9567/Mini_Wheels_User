@@ -23,7 +23,7 @@ class TermsDialog {
               width: double.maxFinite,
               child: SingleChildScrollView(
                 child: Text(
-                  "Welcome to Petzy!\n\n"
+                  "Welcome to Mini Wheelz!\n\n"
                   "By using our services, you agree to the following terms:\n\n"
                   "1. Usage of App\n"
                   "   • You must use the app only for lawful purposes.\n"
@@ -33,13 +33,13 @@ class TermsDialog {
                   "   • Read our Privacy Policy for details on data collection.\n\n"
                   "3. User Responsibilities\n"
                   "   • You are responsible for providing accurate information.\n"
-                  "   • Petzy is not liable for damages caused by incorrect usage.\n\n"
+                  "   • Mini Wheelz is not liable for damages caused by incorrect usage.\n\n"
                   "4. Updates & Modifications\n"
                   "   • We may update these terms at any time.\n"
                   "   • Continued use of the app means you accept the changes.\n\n"
                   "5. Limitations of Liability\n"
                   "   • We are not liable for indirect, incidental, or consequential damages.\n\n"
-                  "Thank you for using Petzy 💙",
+                  "Thank you for using Mini Wheelz 💙",
                   style: TextStyle(color: grey600, fontSize: 14, height: 1.4),
                 ),
               ),

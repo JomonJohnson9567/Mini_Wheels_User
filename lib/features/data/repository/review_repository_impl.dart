@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mini_wheelz_user/features/domain/entity/product_rating.dart';
 import 'package:mini_wheelz_user/features/domain/entity/review_entity.dart';
 import 'package:mini_wheelz_user/features/domain/repository/review_repository.dart';
- 
+
 class ReviewRepositoryImpl implements ReviewRepository {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
@@ -36,14 +36,14 @@ class ReviewRepositoryImpl implements ReviewRepository {
   @override
   Future<List<ReviewEntity>> getProductReviews(String productId) async {
     try {
-      final snapshot =
-          await firestore
-              .collection('reviews')
-              .where('productId', isEqualTo: productId)
-              .orderBy('createdAt', descending: true)
-              .get();
+      // First get all reviews for the product without ordering
+      final snapshot = await firestore
+          .collection('reviews')
+          .where('productId', isEqualTo: productId)
+          .get();
 
-      return snapshot.docs.map((doc) {
+      // Convert to entities
+      final reviews = snapshot.docs.map((doc) {
         final data = doc.data();
         return ReviewEntity(
           id: data['id'],
@@ -58,6 +58,11 @@ class ReviewRepositoryImpl implements ReviewRepository {
           orderId: data['orderId'],
         );
       }).toList();
+
+      // Sort in memory by createdAt (most recent first)
+      reviews.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+      return reviews;
     } catch (e) {
       throw Exception('Failed to get reviews: $e');
     }
@@ -105,15 +110,20 @@ class ReviewRepositoryImpl implements ReviewRepository {
   @override
   Future<bool> hasUserReviewedProduct(String userId, String productId) async {
     try {
-      final snapshot =
-          await firestore
-              .collection('reviews')
-              .where('userId', isEqualTo: userId)
-              .where('productId', isEqualTo: productId)
-              .limit(1)
-              .get();
+      // Use a single where clause to avoid composite index requirement
+      // Query by userId first, then filter by productId in memory
+      final snapshot = await firestore
+          .collection('reviews')
+          .where('userId', isEqualTo: userId)
+          .get();
 
-      return snapshot.docs.isNotEmpty;
+      // Filter by productId in memory
+      final hasReview = snapshot.docs.any((doc) {
+        final data = doc.data();
+        return data['productId'] == productId;
+      });
+
+      return hasReview;
     } catch (e) {
       return false;
     }

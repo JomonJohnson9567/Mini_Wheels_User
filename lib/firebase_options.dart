@@ -25,9 +25,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -65,26 +71,5 @@ class DefaultFirebaseOptions {
     projectId: 'miniwheelscars',
     storageBucket: 'miniwheelscars.firebasestorage.app',
     iosBundleId: 'com.example.miniWheelzUser',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBJhToO21ph3ys6scqf4xl4ZwJMxCEEEBA',
-    appId: '1:843413589602:ios:474a9e4388893d9928cb3b',
-    messagingSenderId: '843413589602',
-    projectId: 'petzy-9fe50',
-    storageBucket: 'petzy-9fe50.firebasestorage.app',
-    androidClientId: '843413589602-afbgov18ddslfd5nigqtb2ech73pm05g.apps.googleusercontent.com',
-    iosClientId: '843413589602-pni4fitqtvc52gaprh0parqjh1otahg4.apps.googleusercontent.com',
-    iosBundleId: 'com.example.petzy',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCGAejlobb4F1Y8cDtfL46TrpF8UMDuAbA',
-    appId: '1:843413589602:web:1ade4e2b4ffda15128cb3b',
-    messagingSenderId: '843413589602',
-    projectId: 'petzy-9fe50',
-    authDomain: 'petzy-9fe50.firebaseapp.com',
-    storageBucket: 'petzy-9fe50.firebasestorage.app',
-    measurementId: 'G-S5C1151ERJ',
   );
 }

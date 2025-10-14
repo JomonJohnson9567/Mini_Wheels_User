@@ -169,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
                         title: 'Contact Support',
                         message:
                             'Need help? You can reach out to us in the following ways:\n\n'
-                            'Email: support@petzy.com\n'
+                            'Email: support@miniwheelz.com\n'
                             'Phone: +91 12345 67890\n\n'
                             'Our support team is available Monday to Friday, 9 AM - 6 PM.',
                         confirmText: 'OK',
@@ -184,7 +184,7 @@ class SettingsScreen extends StatelessWidget {
                   onTap:
                       () => CustomDialog.show(
                         context: context,
-                        title: 'About Petzy',
+                        title: 'About Mini Wheelz',
                         message:
                             'Version 1.0.0\n\nYour trusted companion for all pet care needs.',
                         confirmText: 'OK',

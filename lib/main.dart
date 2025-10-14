@@ -225,7 +225,7 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Petzy',
+              title: 'Mini Wheelz',
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
                 useMaterial3: true,

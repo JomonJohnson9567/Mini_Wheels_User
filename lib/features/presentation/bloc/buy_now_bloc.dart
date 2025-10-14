@@ -106,7 +106,7 @@ class BuyNowBloc extends Bloc<BuyNowEvent, BuyNowState> {
         'key': 'rzp_test_zGUWcHp8eqJukI',
         'amount': (s.totalAmount * 100).toInt(),
         'currency': 'INR',
-        'name': 'Petzy',
+        'name': 'Mini Wheelz',
         'description': 'Purchase of ${s.product.name}',
         'prefill': {'contact': contact, 'email': email, 'name': name},
         'theme': {'color': '#EF8A45'},
