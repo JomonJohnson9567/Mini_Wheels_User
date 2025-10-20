@@ -6,6 +6,7 @@ import 'package:mini_wheelz_user/features/domain/repository/cart_repository.dart
 import 'package:mini_wheelz_user/features/domain/repository/order_repository.dart';
 import 'package:mini_wheelz_user/features/domain/repository/product_repository.dart';
 import 'package:mini_wheelz_user/features/domain/repository/profile_repository.dart';
+import 'package:mini_wheelz_user/features/domain/repository/address_repository.dart';
 import 'package:mini_wheelz_user/features/domain/usecase/clear_cart.dart';
 import 'package:mini_wheelz_user/features/domain/usecase/create_order.dart';
 import 'package:mini_wheelz_user/features/domain/usecase/get_profile.dart';
@@ -14,9 +15,10 @@ import 'package:mini_wheelz_user/features/domain/usecase/update_order_status.dar
 import 'package:mini_wheelz_user/features/presentation/bloc/cart_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/cart_state.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/checkout_bloc.dart';
+import 'package:mini_wheelz_user/features/presentation/bloc/address_bloc.dart';
+import 'package:mini_wheelz_user/features/presentation/bloc/address_event.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/checkout_screen/checkout_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 
 class CartSummary extends StatelessWidget {
   final CartLoaded state;
@@ -70,31 +72,38 @@ class CartSummary extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder:
-            (context) => BlocProvider(
-              create:
-                  (context) => CheckoutBloc(
-                    cartBloc: context.read<CartBloc>(),
-                    createOrderUseCase: CreateOrderUseCase(
-                      context.read<OrderRepository>(),
-                    ),
-                    reduceProductStockUseCase: ReduceProductStockUseCase(
-                      context.read<ProductRepository>(),
-                    ),
-                    updateOrderStatusUseCase: UpdateOrderStatusUseCase(
-                      context.read<OrderRepository>(),
-                    ),
-                    clearCartUseCase: ClearCartUseCase(
-                      context.read<CartRepository>(),
-                    ),
-                    getProfileUseCase: GetProfileUseCase(
-                      context.read<ProfileRepository>(),
-                    ),
-                    razorpay: Razorpay(),
-                    firebaseAuth: FirebaseAuth.instance,
-                  ),
-              child: const CheckoutScreen(),
+        builder: (context) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => CheckoutBloc(
+                cartBloc: context.read<CartBloc>(),
+                createOrderUseCase: CreateOrderUseCase(
+                  context.read<OrderRepository>(),
+                ),
+                reduceProductStockUseCase: ReduceProductStockUseCase(
+                  context.read<ProductRepository>(),
+                ),
+                updateOrderStatusUseCase: UpdateOrderStatusUseCase(
+                  context.read<OrderRepository>(),
+                ),
+                clearCartUseCase: ClearCartUseCase(
+                  context.read<CartRepository>(),
+                ),
+                getProfileUseCase: GetProfileUseCase(
+                  context.read<ProfileRepository>(),
+                ),
+                razorpay: Razorpay(),
+                firebaseAuth: FirebaseAuth.instance,
+              ),
             ),
+            BlocProvider(
+              create: (context) =>
+                  AddressBloc(context.read<AddressRepository>())
+                    ..add(LoadAddresses()),
+            ),
+          ],
+          child: const CheckoutScreen(),
+        ),
       ),
     );
   }

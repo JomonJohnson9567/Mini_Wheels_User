@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_wheelz_user/features/core/colors.dart';
+import 'package:mini_wheelz_user/features/domain/entity/address.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/cart_state.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/checkout_bloc.dart';
- 
+import 'address_selection_widget.dart';
 
-class CheckoutOrderSummary extends StatelessWidget {
+class CheckoutOrderSummary extends StatefulWidget {
   final CartLoaded cartState;
+  final Function(Address?) onAddressSelected;
 
-  const CheckoutOrderSummary({super.key, required this.cartState});
+  const CheckoutOrderSummary({
+    super.key,
+    required this.cartState,
+    required this.onAddressSelected,
+  });
+
+  @override
+  State<CheckoutOrderSummary> createState() => _CheckoutOrderSummaryState();
+}
+
+class _CheckoutOrderSummaryState extends State<CheckoutOrderSummary> {
+  Address? selectedAddress;
 
   @override
   Widget build(BuildContext context) {
-    final grandTotal = cartState.items.fold<double>(
+    final grandTotal = widget.cartState.items.fold<double>(
       0.0,
       (sum, item) => sum + (item.price * item.quantity),
     );
@@ -22,6 +35,18 @@ class CheckoutOrderSummary extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Address Selection
+          AddressSelectionWidget(
+            selectedAddress: selectedAddress,
+            onAddressSelected: (address) {
+              setState(() {
+                selectedAddress = address;
+              });
+              widget.onAddressSelected(address);
+            },
+          ),
+          const SizedBox(height: 16),
+
           Text(
             'Order Summary',
             style: TextStyle(
@@ -33,7 +58,9 @@ class CheckoutOrderSummary extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Items list
-          ...cartState.items.map((item) => CheckoutOrderItem(item: item)),
+          ...widget.cartState.items.map(
+            (item) => CheckoutOrderItem(item: item),
+          ),
 
           const SizedBox(height: 16),
           const Divider(),
@@ -91,13 +118,12 @@ class CheckoutOrderItem extends StatelessWidget {
               width: 60,
               height: 60,
               fit: BoxFit.cover,
-              errorBuilder:
-                  (_, __, ___) => Container(
-                    width: 60,
-                    height: 60,
-                    color: Colors.grey.shade300,
-                    child: const Icon(Icons.image_not_supported),
-                  ),
+              errorBuilder: (_, __, ___) => Container(
+                width: 60,
+                height: 60,
+                color: Colors.grey.shade300,
+                child: const Icon(Icons.image_not_supported),
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -136,11 +162,13 @@ class CheckoutOrderItem extends StatelessWidget {
 class CheckoutPaymentButton extends StatelessWidget {
   final CheckoutState checkoutState;
   final CartLoaded cartState;
+  final Address? selectedAddress;
 
   const CheckoutPaymentButton({
     super.key,
     required this.checkoutState,
     required this.cartState,
+    this.selectedAddress,
   });
 
   @override
@@ -149,6 +177,9 @@ class CheckoutPaymentButton extends StatelessWidget {
       0.0,
       (sum, item) => sum + (item.price * item.quantity),
     );
+
+    final canProceed =
+        selectedAddress != null && checkoutState is! CheckoutProcessing;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -162,41 +193,78 @@ class CheckoutPaymentButton extends StatelessWidget {
           ),
         ],
       ),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed:
-              checkoutState is CheckoutProcessing
-                  ? null
-                  : () {
-                    context.read<CheckoutBloc>().add(const StartCheckout());
-                  },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: primaryColor,
-            foregroundColor: whiteColor,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child:
-              checkoutState is CheckoutProcessing
-                  ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      color: whiteColor,
-                      strokeWidth: 2,
-                    ),
-                  )
-                  : Text(
-                    'Pay ₹${grandTotal.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+      child: Column(
+        children: [
+          if (selectedAddress == null)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.orange.shade200),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.warning_amber,
+                    color: Colors.orange.shade600,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Please select a delivery address to continue',
+                      style: TextStyle(
+                        color: Colors.orange.shade700,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-        ),
+                ],
+              ),
+            ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: canProceed
+                  ? () {
+                      context.read<CheckoutBloc>().add(
+                        StartCheckout(selectedAddress: selectedAddress),
+                      );
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: canProceed ? primaryColor : Colors.grey,
+                foregroundColor: whiteColor,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: checkoutState is CheckoutProcessing
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: whiteColor,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Text(
+                      selectedAddress == null
+                          ? 'Select Address First'
+                          : 'Pay ₹${grandTotal.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+            ),
+          ),
+        ],
       ),
     );
   }

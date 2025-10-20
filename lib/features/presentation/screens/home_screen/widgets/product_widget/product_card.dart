@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_wheelz_user/features/core/colors.dart';
@@ -10,7 +12,7 @@ import 'package:mini_wheelz_user/features/presentation/bloc/cubit/favorites_cubi
 import 'package:mini_wheelz_user/features/presentation/bloc/product_details.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/product_details/product_details_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/widgets/dailogbox/cutom_dailog.dart';
- 
+
 import 'package:shimmer/shimmer.dart';
 
 class ProductGridCard extends StatelessWidget {
@@ -24,11 +26,10 @@ class ProductGridCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder:
-                (_) => BlocProvider(
-                  create: (_) => ProductDetailBloc(),
-                  child: ProductDetailPage(product: product),
-                ),
+            builder: (_) => BlocProvider(
+              create: (_) => ProductDetailBloc(),
+              child: ProductDetailPage(product: product),
+            ),
           ),
         );
       },
@@ -76,13 +77,12 @@ class ProductGridCard extends StatelessWidget {
                 ),
               );
             },
-            errorBuilder:
-                (_, __, ___) => Container(
-                  height: 120,
-                  width: double.infinity,
-                  color: grey300,
-                  child: const Center(child: Icon(Icons.broken_image)),
-                ),
+            errorBuilder: (_, __, ___) => Container(
+              height: 120,
+              width: double.infinity,
+              color: grey300,
+              child: const Center(child: Icon(Icons.broken_image)),
+            ),
           ),
         ),
         Positioned(
@@ -138,7 +138,7 @@ class ProductGridCard extends StatelessWidget {
 
   Widget _buildNameAndDescription() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -208,81 +208,78 @@ class ProductGridCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
-          onTap:
-              isOutOfStock
-                  ? () {
-                    CustomDialog.show(
-                      context: context,
-                      title: "Out of Stock",
-                      message: "This product is currently out of stock.",
-                      confirmText: "OK",
-                    );
-                  }
-                  : () async {
-                    // NEW: Check current cart before adding
-                    final cartBloc = context.read<CartBloc>();
-                    final currentState = cartBloc.state;
+          onTap: isOutOfStock
+              ? () {
+                  CustomDialog.show(
+                    context: context,
+                    title: "Out of Stock",
+                    message: "This product is currently out of stock.",
+                    confirmText: "OK",
+                  );
+                }
+              : () async {
+                  // NEW: Check current cart before adding
+                  final cartBloc = context.read<CartBloc>();
+                  final currentState = cartBloc.state;
 
-                    if (currentState is CartLoaded) {
-                      // Find if product already exists in cart
-                      final existingItem =
-                          currentState.items
-                              .where((item) => item.id == product.id)
-                              .firstOrNull;
+                  if (currentState is CartLoaded) {
+                    // Find if product already exists in cart
+                    final existingItem = currentState.items
+                        .where((item) => item.id == product.id)
+                        .firstOrNull;
 
-                      final currentCartQuantity = existingItem?.quantity ?? 0;
+                    final currentCartQuantity = existingItem?.quantity ?? 0;
 
-                      // NEW: Check if adding one more would exceed stock
-                      if (currentCartQuantity >= stockQuantity) {
-                        CustomDialog.show(
-                          context: context,
-                          title: "Maximum Quantity Reached",
-                          message:
-                              "You already have the maximum quantity ($stockQuantity) in your cart.",
-                          confirmText: "OK",
-                        );
-                        return; // Don't add to cart
-                      }
+                    // NEW: Check if adding one more would exceed stock
+                    if (currentCartQuantity >= stockQuantity) {
+                      CustomDialog.show(
+                        context: context,
+                        title: "Maximum Quantity Reached",
+                        message:
+                            "You already have the maximum quantity ($stockQuantity) in your cart.",
+                        confirmText: "OK",
+                      );
+                      return; // Don't add to cart
                     }
+                  }
 
-                    // Original code - only runs if under stock limit
-                    final cartItem = CartItem(
-                      id: product.id,
-                      name: product.name,
-                      price: product.price.toDouble(),
-                      quantity: 1,
-                      imageUrl: product.imageUrls.first,
-                    );
+                  // Original code - only runs if under stock limit
+                  final cartItem = CartItem(
+                    id: product.id,
+                    name: product.name,
+                    price: product.price.toDouble(),
+                    quantity: 1,
+                    imageUrl: product.imageUrls.first,
+                  );
 
-                    cartBloc.add(AddCartItem(cartItem));
+                  cartBloc.add(AddCartItem(cartItem));
 
-                    CustomDialog.show(
-                      context: context,
-                      title: "Added to Cart",
-                      message: "This product has been added to your cart.",
-                      confirmText: "OK",
-                      onConfirm: () => Navigator.of(context).pop(),
-                    );
-                  },
+                  CustomDialog.show(
+                    context: context,
+                    title: "Added to Cart",
+                    message: "This product has been added to your cart.",
+                    confirmText: "OK",
+                    onConfirm: () => Navigator.of(context).pop(),
+                  );
+                },
           child: Center(
-            child:
-                isOutOfStock
-                    ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.block, color: whiteColor, size: 16),
-                        SizedBox(width: 4),
-                        Text(
-                          "Out of Stock",
-                          style: TextStyle(
-                            color: whiteColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
+            child: isOutOfStock
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.block, color: whiteColor, size: 16),
+                      SizedBox(width: 4),
+                      Text(
+                        "Out of Stock",
+                        style: TextStyle(
+                          color: whiteColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
-                      ],
-                    )
-                    : Icon(Icons.shopping_cart, color: whiteColor),
+                      ),
+                    ],
+                  )
+                : Icon(Icons.shopping_cart, color: whiteColor),
           ),
         ),
       ),

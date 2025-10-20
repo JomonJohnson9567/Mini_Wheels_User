@@ -390,26 +390,48 @@ class AddressFormDialog extends StatelessWidget {
   String? _nameValidator(String? value) {
     final val = value?.trim() ?? '';
     if (val.length < 2) return 'Must be at least 2 characters';
-    final regex = RegExp(r'^[a-zA-Z\s]+$');
-    if (!regex.hasMatch(val)) return 'Only alphabets and spaces allowed';
+    if (val.length > 50) return 'Must be less than 50 characters';
+
+    // Fixed regex: removed the trailing space
+    final regex = RegExp(r"^[a-zA-Z\s.\-']+$");
+
+    if (!regex.hasMatch(val)) {
+      return 'Only alphabets, spaces, dots, hyphens and apostrophes allowed';
+    }
+
     return null;
   }
 
   String? _phoneValidator(String? value) {
     final val = value?.trim() ?? '';
-    final phoneRegex = RegExp(r'^\d{10}$');
-    if (!phoneRegex.hasMatch(val)) {
-      return 'Enter a valid 10-digit phone number';
+    if (val.isEmpty) return 'Phone number is required';
+
+    // Remove any spaces, dashes, or parentheses
+    final cleanPhone = val.replaceAll(RegExp(r'[\s\-\(\)]'), '');
+
+    // Check if it's a valid Indian mobile number
+    final phoneRegex = RegExp(r'^(\+91|91)?[6-9]\d{9}$');
+    if (!phoneRegex.hasMatch(cleanPhone)) {
+      return 'Enter a valid 10-digit Indian mobile number';
     }
     return null;
   }
 
   String? _pinValidator(String? value) {
     final val = value?.trim() ?? '';
+    if (val.isEmpty) return 'Pincode is required';
+
     final pinRegex = RegExp(r'^\d{6}$');
     if (!pinRegex.hasMatch(val)) {
       return 'Enter a valid 6-digit pincode';
     }
+
+    // Basic validation for Indian pincodes (first digit should be 1-9)
+    final firstDigit = int.tryParse(val[0]);
+    if (firstDigit == null || firstDigit < 1 || firstDigit > 9) {
+      return 'Enter a valid Indian pincode';
+    }
+
     return null;
   }
 }
