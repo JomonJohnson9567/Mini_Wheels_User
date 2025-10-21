@@ -20,7 +20,6 @@ import 'package:mini_wheelz_user/features/presentation/screens/product_details/w
 import 'package:mini_wheelz_user/features/presentation/screens/product_details/widgets/product_stock_and_category.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/write_review/product_review_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/widgets/star_rating.dart';
- 
 
 class ProductDetailPage extends StatefulWidget {
   final ProductEntity product;
@@ -173,22 +172,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   // 🔥 NEW: Reviews section
   Widget _buildReviewsSection(ProductEntity product) {
     return BlocProvider(
-      create:
-          (context) => ReviewBloc(
-            createReviewUseCase: CreateReviewUseCase(
-              context.read<ReviewRepository>(),
-            ),
-            getProductReviewsUseCase: GetProductReviewsUseCase(
-              context.read<ReviewRepository>(),
-            ),
-            getProductRatingUseCase: GetProductRatingUseCase(
-              context.read<ReviewRepository>(),
-            ),
-            getProfileUseCase: GetProfileUseCase(
-              context.read<ProfileRepository>(),
-            ),
-            firebaseAuth: FirebaseAuth.instance,
-          )..add(LoadProductReviews(product.id)),
+      create: (context) => ReviewBloc(
+        createReviewUseCase: CreateReviewUseCase(
+          context.read<ReviewRepository>(),
+        ),
+        getProductReviewsUseCase: GetProductReviewsUseCase(
+          context.read<ReviewRepository>(),
+        ),
+        getProductRatingUseCase: GetProductRatingUseCase(
+          context.read<ReviewRepository>(),
+        ),
+        getProfileUseCase: GetProfileUseCase(context.read<ProfileRepository>()),
+        firebaseAuth: FirebaseAuth.instance,
+      )..add(LoadProductReviews(product.id)),
       child: BlocBuilder<ReviewBloc, ReviewState>(
         builder: (context, state) {
           if (state is ReviewLoading) {
@@ -512,29 +508,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder:
-            (context) => BlocProvider(
-              create:
-                  (context) => ReviewBloc(
-                    createReviewUseCase: CreateReviewUseCase(
-                      context.read<ReviewRepository>(),
-                    ),
-                    getProductReviewsUseCase: GetProductReviewsUseCase(
-                      context.read<ReviewRepository>(),
-                    ),
-                    getProductRatingUseCase: GetProductRatingUseCase(
-                      context.read<ReviewRepository>(),
-                    ),
-                    getProfileUseCase: GetProfileUseCase(
-                      context.read<ProfileRepository>(),
-                    ),
-                    firebaseAuth: FirebaseAuth.instance,
-                  ),
-              child: ProductReviewsScreen(
-                productId: product.id,
-                productName: product.name,
-              ),
+        builder: (context) => BlocProvider(
+          create: (context) => ReviewBloc(
+            createReviewUseCase: CreateReviewUseCase(
+              context.read<ReviewRepository>(),
             ),
+            getProductReviewsUseCase: GetProductReviewsUseCase(
+              context.read<ReviewRepository>(),
+            ),
+            getProductRatingUseCase: GetProductRatingUseCase(
+              context.read<ReviewRepository>(),
+            ),
+            getProfileUseCase: GetProfileUseCase(
+              context.read<ProfileRepository>(),
+            ),
+            firebaseAuth: FirebaseAuth.instance,
+          ),
+          child: ProductReviewsScreen(
+            productId: product.id,
+            productName: product.name,
+          ),
+        ),
       ),
     );
   }

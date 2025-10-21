@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mini_wheelz_user/features/core/colors.dart';
+import 'package:mini_wheelz_user/features/domain/entity/address.dart';
 import 'package:mini_wheelz_user/features/domain/entity/order_entity.dart';
 import 'package:mini_wheelz_user/features/domain/repository/order_repository.dart';
 import 'package:mini_wheelz_user/features/domain/repository/product_repository.dart';
 import 'package:mini_wheelz_user/features/domain/repository/wallet_repository.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/order_cancel_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/order_details_bloc.dart';
+import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/address_details.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/order_action_buttons.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/order_error_state.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/order_info_card.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/order_status_card.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/payment_details_card.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/order_details/widgets/product_details_card.dart';
- 
 
 class OrderDetailsScreen extends StatefulWidget {
   final String orderId;
@@ -37,13 +38,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create:
-              (context) => OrderCancelBloc(
-                orderRepository: context.read<OrderRepository>(),
-                walletRepository: context.read<WalletRepository>(),
-                productRepository: context.read<ProductRepository>(),
-                firebaseAuth: FirebaseAuth.instance,
-              ),
+          create: (context) => OrderCancelBloc(
+            orderRepository: context.read<OrderRepository>(),
+            walletRepository: context.read<WalletRepository>(),
+            productRepository: context.read<ProductRepository>(),
+            firebaseAuth: FirebaseAuth.instance,
+          ),
         ),
       ],
       child: Scaffold(
@@ -132,6 +132,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
           // Product Details Card
           ProductDetailsCard(order: order),
+          const SizedBox(height: 16),
+          // AddressDetails(
+          //   address: order.address,
+          // ),
           const SizedBox(height: 16),
 
           // Order Information Card
