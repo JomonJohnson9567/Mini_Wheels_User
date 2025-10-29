@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mini_wheelz_user/features/domain/entity/user_entity.dart';
  
 class UserModel extends UserEntity {
+  // ignore: use_super_parameters
   UserModel({String? id, String? email, String? name})
     : super(id: id, email: email, name: name);
 

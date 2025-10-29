@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/entity/address.dart';
@@ -56,7 +58,7 @@ class AddressRepositoryImpl implements AddressRepository {
         .doc(addressId)
         .delete();
   }
-
+ 
   Future<void> updateAddress(String uid, Address address) async {
     await firestore
         .collection('users')

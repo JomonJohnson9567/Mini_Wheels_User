@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 const Color primaryColor = Color.fromARGB(255, 66, 152, 233);

@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:mini_wheelz_user/features/domain/repository/auth_repository.dart';

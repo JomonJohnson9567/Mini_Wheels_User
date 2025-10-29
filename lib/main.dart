@@ -58,7 +58,6 @@ import 'package:mini_wheelz_user/features/presentation/bloc/theme_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/theme_event.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/theme_state.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/auth_warper/auth_wrapper.dart';
-
 import 'firebase_options.dart';
 
 void main() async {

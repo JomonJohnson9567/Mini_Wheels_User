@@ -39,11 +39,12 @@ class ProductGridCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             _buildImageSection(context),
-            const SizedBox(height: 6),
-            _buildNameAndDescription(),
             const Spacer(),
+            _buildNameAndDescription(),
+
             _buildUnitAndPrice(),
             _buildAddToCartButton(context),
           ],
@@ -138,7 +139,7 @@ class ProductGridCard extends StatelessWidget {
 
   Widget _buildNameAndDescription() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -152,6 +153,7 @@ class ProductGridCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
+          const SizedBox(height: 2),
           Text(
             product.description ?? '',
             style: const TextStyle(fontSize: 12, color: greyColor),
@@ -165,7 +167,7 @@ class ProductGridCard extends StatelessWidget {
 
   Widget _buildUnitAndPrice() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

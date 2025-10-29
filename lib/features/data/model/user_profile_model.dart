@@ -5,6 +5,7 @@
 import 'package:mini_wheelz_user/features/domain/entity/profile_entity.dart';
 
 class ProfileModel extends Profile {
+  // ignore: use_super_parameters
   ProfileModel({String? name, String? email, String? phone, String? photoUrl})
     : super(name: name, email: email, phone: phone, photoUrl: photoUrl);
 
