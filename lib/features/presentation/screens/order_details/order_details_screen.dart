@@ -73,11 +73,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       content: Text(state.message),
                       backgroundColor: Colors.green,
                       duration: const Duration(seconds: 3),
-                      action: SnackBarAction(
-                        label: 'OK',
-                        textColor: whiteColor,
-                        onPressed: () {},
-                      ),
+                       
                     ),
                   );
                 } else if (state is OrderCancelError) {
