@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mini_wheelz_user/features/data/data_source/profile_remote_datasource.dart';
 import 'package:mini_wheelz_user/features/data/model/user_profile_model.dart';
 import 'package:mini_wheelz_user/features/domain/entity/profile_entity.dart';
@@ -56,7 +57,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
       await remoteDataSource.saveProfileData(uid, data);
       return true;
     } catch (e) {
-      print("Error saving profile: $e");
+      if (kDebugMode) {
+        print("Error saving profile: $e");
+      }
       return false;
     }
   }

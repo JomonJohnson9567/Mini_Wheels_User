@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_wheelz_user/features/domain/entity/order_entity.dart';
 import 'package:mini_wheelz_user/features/domain/entity/product_entity.dart';
+import 'package:mini_wheelz_user/features/domain/entity/address.dart';
 import 'package:mini_wheelz_user/features/domain/usecase/clear_cart.dart';
 import 'package:mini_wheelz_user/features/domain/usecase/create_order.dart';
 import 'package:mini_wheelz_user/features/domain/usecase/get_profile.dart';
@@ -20,7 +21,10 @@ abstract class CheckoutEvent extends Equatable {
 }
 
 class StartCheckout extends CheckoutEvent {
-  const StartCheckout();
+  final Address? selectedAddress;
+  const StartCheckout({this.selectedAddress});
+  @override
+  List<Object?> get props => [selectedAddress];
 }
 
 class PaymentSuccessMulti extends CheckoutEvent {
@@ -129,6 +133,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           totalAmount: cartItem.price * cartItem.quantity,
           status: 'pending',
           createdAt: DateTime.now(),
+          deliveryAddress: event.selectedAddress,
         );
 
         await createOrderUseCase(order);

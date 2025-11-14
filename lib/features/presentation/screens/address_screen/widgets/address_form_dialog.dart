@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_wheelz_user/features/domain/entity/address.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/address_bloc.dart';
@@ -53,7 +54,7 @@ class AddressFormDialog extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(12),
@@ -74,9 +75,9 @@ class AddressFormDialog extends StatelessWidget {
                         Text(
                           address == null ? 'Add New Address' : 'Edit Address',
                           style: const TextStyle(
-                            color: Colors.white,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -101,7 +102,6 @@ class AddressFormDialog extends StatelessWidget {
               ),
             ),
 
-            // Form Content
             Flexible(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
@@ -196,11 +196,12 @@ class AddressFormDialog extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       _field(
-                        "Delivery Instructions (optional)",
+                        "Delivery Instructions",
                         _note,
                         Icons.note_outlined,
-                        required: false,
+                        required: true,
                         maxLines: 3,
+                        patternValidation: _deliveryInstructionsValidator,
                       ),
                     ],
                   ),
@@ -210,93 +211,82 @@ class AddressFormDialog extends StatelessWidget {
 
             // Footer Actions
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.grey.shade50,
                 border: Border(top: BorderSide(color: Colors.grey.shade200)),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        side: BorderSide(color: Colors.blue.shade700),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                   ),
                   const SizedBox(width: 12),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        final newAddress = Address(
-                          id: address?.id ?? '',
-                          name: _name.text.trim(),
-                          houseName: _house.text.trim(),
-                          town: _town.text.trim(),
-                          district: _district.text.trim(),
-                          state: _state.text.trim(),
-                          country: _country.text.trim(),
-                          pincode: _pin.text.trim(),
-                          phone: _phone.text.trim(),
-                          instructions: _note.text.trim(),
-                          isSelected: address?.isSelected ?? false,
-                        );
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          final newAddress = Address(
+                            id: address?.id ?? '',
+                            name: _name.text.trim(),
+                            houseName: _house.text.trim(),
+                            town: _town.text.trim(),
+                            district: _district.text.trim(),
+                            state: _state.text.trim(),
+                            country: _country.text.trim(),
+                            pincode: _pin.text.trim(),
+                            phone: _phone.text.trim(),
+                            instructions: _note.text.trim(),
+                            isSelected: address?.isSelected ?? false,
+                          );
 
-                        if (address == null) {
-                          context.read<AddressBloc>().add(
-                            AddAddress(newAddress),
-                          );
-                        } else {
-                          context.read<AddressBloc>().add(
-                            UpdateAddress(newAddress),
-                          );
+                          if (address == null) {
+                            context.read<AddressBloc>().add(
+                              AddAddress(newAddress),
+                            );
+                          } else {
+                            context.read<AddressBloc>().add(
+                              UpdateAddress(newAddress),
+                            );
+                          }
+
+                          Navigator.pop(context);
                         }
-
-                        Navigator.pop(context);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade700,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 12,
-                      ),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          address == null ? Icons.add : Icons.check,
-                          size: 20,
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.blue.shade700,
+                        foregroundColor: Colors.white,
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          address == null ? "Add Address" : "Update Address",
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      icon: Icon(
+                        address == null ? Icons.add : Icons.check,
+                        size: 20,
+                      ),
+                      label: Text(
+                        address == null ? "Add Address" : "Update Address",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -340,6 +330,9 @@ class AddressFormDialog extends StatelessWidget {
         controller: ctrl,
         maxLines: maxLines,
         keyboardType: number ? TextInputType.number : TextInputType.text,
+        inputFormatters: number
+            ? [FilteringTextInputFormatter.digitsOnly]
+            : null,
         style: const TextStyle(fontSize: 15),
         decoration: InputDecoration(
           labelText: label,
@@ -371,10 +364,11 @@ class AddressFormDialog extends StatelessWidget {
             horizontal: 16,
             vertical: 16,
           ),
+          errorMaxLines: 2,
         ),
         validator: (val) {
           if (required && (val == null || val.trim().isEmpty)) {
-            return 'Please enter $label';
+            return 'Please enter ${label.toLowerCase()}';
           }
 
           if (patternValidation != null) {
@@ -390,26 +384,71 @@ class AddressFormDialog extends StatelessWidget {
   String? _nameValidator(String? value) {
     final val = value?.trim() ?? '';
     if (val.length < 2) return 'Must be at least 2 characters';
-    final regex = RegExp(r'^[a-zA-Z\s]+$');
-    if (!regex.hasMatch(val)) return 'Only alphabets and spaces allowed';
+    if (val.length > 50) return 'Must be less than 50 characters';
+
+    final regex = RegExp(r"^[a-zA-Z\s.\-']+$");
+
+    if (!regex.hasMatch(val)) {
+      return 'Only alphabets, spaces, dots, hyphens and apostrophes allowed';
+    }
+
     return null;
   }
 
   String? _phoneValidator(String? value) {
     final val = value?.trim() ?? '';
-    final phoneRegex = RegExp(r'^\d{10}$');
-    if (!phoneRegex.hasMatch(val)) {
-      return 'Enter a valid 10-digit phone number';
+    if (val.isEmpty) return 'Phone number is required';
+
+    final cleanPhone = val.replaceAll(RegExp(r'[\s\-\(\)]'), '');
+
+    final phoneRegex = RegExp(r'^(\+91|91)?[6-9]\d{9}$');
+    if (!phoneRegex.hasMatch(cleanPhone)) {
+      return 'Enter a valid 10-digit Indian mobile number';
     }
     return null;
   }
 
   String? _pinValidator(String? value) {
     final val = value?.trim() ?? '';
+    if (val.isEmpty) return 'Pincode is required';
+
     final pinRegex = RegExp(r'^\d{6}$');
     if (!pinRegex.hasMatch(val)) {
       return 'Enter a valid 6-digit pincode';
     }
+
+    final firstDigit = int.tryParse(val[0]);
+    if (firstDigit == null || firstDigit < 1 || firstDigit > 9) {
+      return 'Enter a valid Indian pincode';
+    }
+
+    return null;
+  }
+
+  String? _deliveryInstructionsValidator(String? value) {
+    final val = value?.trim() ?? '';
+
+    // Check if field is empty
+    if (val.isEmpty) {
+      return 'Delivery instructions are required';
+    }
+
+    // Validate minimum length
+    if (val.length < 3) {
+      return 'Instructions must be at least 3 characters';
+    }
+
+    // Validate maximum length
+    if (val.length > 200) {
+      return 'Instructions must be less than 200 characters';
+    }
+
+    // Check for valid characters (allow letters, numbers, spaces, and common punctuation)
+    final regex = RegExp(r"^[a-zA-Z0-9\s.,\-'!?()]+$");
+    if (!regex.hasMatch(val)) {
+      return 'Only letters, numbers, spaces and basic punctuation allowed';
+    }
+
     return null;
   }
 }

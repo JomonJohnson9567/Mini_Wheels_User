@@ -5,9 +5,7 @@ import 'package:mini_wheelz_user/features/presentation/screens/cart_screen/cart_
 import 'package:mini_wheelz_user/features/presentation/screens/fevorites_screen/fevorites_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/log_in_screen/log_in_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/search_screen/product_search.dart';
-import 'package:mini_wheelz_user/features/presentation/screens/welcome_screen/welcome_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/widgets/dailogbox/cutom_dailog.dart';
- 
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final User? user;
@@ -63,35 +61,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => CartScreen()),
-              );
-            }
-          },
-        ),
-        IconButton(
-          icon: Icon(user != null ? Icons.logout : Icons.login),
-          onPressed: () {
-            if (user != null) {
-              CustomDialog.show(
-                context: context,
-                title: 'Confirm Logout',
-                message: 'Are you sure you want to sign out?',
-                confirmText: 'Logout',
-                cancelText: 'Cancel',
-                isDestructive: true,
-                onConfirm: () async {
-                  Navigator.of(context).pop();
-                  await auth.signOut();
-                  Navigator.pushReplacement(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    MaterialPageRoute(builder: (_) => const WelcomePage()),
-                  );
-                },
-              );
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const LoginPage()),
               );
             }
           },

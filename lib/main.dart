@@ -57,8 +57,9 @@ import 'package:mini_wheelz_user/features/presentation/bloc/profile_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/theme_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/theme_event.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/theme_state.dart';
+import 'package:mini_wheelz_user/features/presentation/bloc/splash_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/auth_warper/auth_wrapper.dart';
-
+import 'package:mini_wheelz_user/features/presentation/screens/splash_screen/splash_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -220,19 +221,20 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider<ThemeBloc>(create: (_) => ThemeBloc()..add(LoadTheme())),
+          BlocProvider<SplashBloc>(create: (_) => SplashBloc()),
         ],
         child: BlocBuilder<ThemeBloc, ThemeState>(
           builder: (context, state) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Petzy',
+              title: 'Mini Wheelz',
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
                 useMaterial3: true,
               ),
               darkTheme: ThemeData.dark(useMaterial3: true),
               themeMode: state.themeMode,
-              home: const AuthWrapper(),
+              home: const SplashScreen(),
             );
           },
         ),

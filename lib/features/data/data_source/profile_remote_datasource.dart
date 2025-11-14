@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileRemoteDataSource {
@@ -45,7 +46,9 @@ class ProfileRemoteDataSource {
       final jsonRes = json.decode(resStr);
       return jsonRes['secure_url'];
     } else {
-      print('Cloudinary upload failed with status: ${response.statusCode}');
+      if (kDebugMode) {
+        print('Cloudinary upload failed with status: ${response.statusCode}');
+      }
       return null;
     }
   }

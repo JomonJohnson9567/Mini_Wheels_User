@@ -12,7 +12,7 @@ import 'package:mini_wheelz_user/features/presentation/bloc/product_event.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/product_state.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/filter_result_screen/filtered_screen.dart';
 import 'package:mini_wheelz_user/features/presentation/screens/home_screen/widgets/custom_navbar.dart';
- 
+
 import 'package:shimmer/shimmer.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -85,16 +85,15 @@ class CategoryScreenContent extends StatelessWidget {
             hintText: 'Search categories...',
             hintStyle: const TextStyle(color: secondaryColor),
             prefixIcon: const Icon(Icons.search, color: primaryColor),
-            suffixIcon:
-                controller.text.isNotEmpty
-                    ? IconButton(
-                      icon: const Icon(Icons.clear, color: primaryColor),
-                      onPressed: () {
-                        controller.clear();
-                        context.read<CategorySearchCubit>().clearQuery();
-                      },
-                    )
-                    : null,
+            suffixIcon: controller.text.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear, color: primaryColor),
+                    onPressed: () {
+                      controller.clear();
+                      context.read<CategorySearchCubit>().clearQuery();
+                    },
+                  )
+                : null,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -134,14 +133,13 @@ class CategoryScreenContent extends StatelessWidget {
 
                 if (catState is CategoriesLoaded &&
                     prodState is ProductLoaded) {
-                  final allCategories =
-                      catState.all
-                          .where(
-                            (cat) => cat.toLowerCase().contains(
-                              searchQuery.toLowerCase(),
-                            ),
-                          )
-                          .toList();
+                  final allCategories = catState.all
+                      .where(
+                        (cat) => cat.toLowerCase().contains(
+                          searchQuery.toLowerCase(),
+                        ),
+                      )
+                      .toList();
 
                   final products = prodState.products;
 
@@ -178,16 +176,15 @@ class CategoryScreenContent extends StatelessWidget {
                           (p) =>
                               p.category.toLowerCase() ==
                               category.toLowerCase(),
-                          orElse:
-                              () => ProductEntity(
-                                id: '',
-                                name: '',
-                                category: '',
-                                price: 0,
-                                imageUrls: [],
-                                quantity: 0,
-                                unit: '',
-                              ),
+                          orElse: () => ProductEntity(
+                            id: '',
+                            name: '',
+                            category: '',
+                            price: 0,
+                            imageUrls: [],
+                            quantity: 0,
+                            unit: '',
+                          ),
                         );
 
                         return _buildCategoryTile(
@@ -237,17 +234,16 @@ class CategoryScreenContent extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         final productState = context.read<ProductBloc>().state;
-        final favorites =
-            context
-                .read<FavoritesCubit>()
-                .state
-                .map((e) => e.productId)
-                .toList();
+        final favorites = context
+            .read<FavoritesCubit>()
+            .state
+            .map((e) => e.productId)
+            .toList();
 
         if (productState is ProductLoaded) {
           context.read<FilterBloc>().add(
             UpdateFilterCriteria(
-              categories: [category],  
+              categories: [category],
               sortOption: 'Favorites First',
             ),
           );
@@ -284,28 +280,23 @@ class CategoryScreenContent extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child:
-                    imageUrl.isNotEmpty
-                        ? Hero(
-                          tag: category,
-                          child: Image.network(
-                            imageUrl,
-                            fit: BoxFit.cover,
-                            errorBuilder:
-                                (_, __, ___) => Center(
-                                  child: Icon(
-                                    Icons.broken_image,
-                                    color: greyColor,
-                                  ),
-                                ),
-                          ),
-                        )
-                        : Center(
-                          child: Icon(
-                            Icons.image_not_supported,
-                            color: greyColor,
+                child: imageUrl.isNotEmpty
+                    ? Hero(
+                        tag: category,
+                        child: Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Center(
+                            child: Icon(Icons.broken_image, color: greyColor),
                           ),
                         ),
+                      )
+                    : Center(
+                        child: Icon(
+                          Icons.image_not_supported,
+                          color: greyColor,
+                        ),
+                      ),
               ),
               Positioned(
                 bottom: 0,

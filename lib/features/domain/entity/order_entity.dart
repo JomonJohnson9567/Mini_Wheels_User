@@ -1,5 +1,6 @@
 import 'package:mini_wheelz_user/features/domain/entity/product_entity.dart';
- 
+import 'package:mini_wheelz_user/features/domain/entity/address.dart';
+
 class OrderEntity {
   final String id;
   final ProductEntity product;
@@ -9,6 +10,7 @@ class OrderEntity {
   final DateTime createdAt;
   final String? razorpayPaymentId;
   final String? razorpayOrderId;
+  final Address? deliveryAddress;
 
   OrderEntity({
     required this.id,
@@ -19,6 +21,7 @@ class OrderEntity {
     required this.createdAt,
     this.razorpayPaymentId,
     this.razorpayOrderId,
+    this.deliveryAddress,
   });
 
   OrderEntity copyWith({
@@ -30,6 +33,7 @@ class OrderEntity {
     DateTime? createdAt,
     String? razorpayPaymentId,
     String? razorpayOrderId,
+    Address? deliveryAddress,
   }) {
     return OrderEntity(
       id: id ?? this.id,
@@ -40,6 +44,7 @@ class OrderEntity {
       createdAt: createdAt ?? this.createdAt,
       razorpayPaymentId: razorpayPaymentId ?? this.razorpayPaymentId,
       razorpayOrderId: razorpayOrderId ?? this.razorpayOrderId,
+      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
     );
   }
 }

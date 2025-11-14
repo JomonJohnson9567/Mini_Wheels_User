@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +43,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           final existingData = docSnapshot.data()!;
           final currentQuantity = existingData['quantity'] ?? 0;
           final newQuantity =
-              currentQuantity + event.item.quantity; // 🔥 Key fix!
+              currentQuantity + event.item.quantity; 
 
           await cartRef.update({
             'quantity': newQuantity,

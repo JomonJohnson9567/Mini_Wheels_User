@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_types_as_parameter_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mini_wheelz_user/features/domain/entity/product_entity.dart';
 import 'package:mini_wheelz_user/features/domain/entity/product_rating.dart';
 import 'package:mini_wheelz_user/features/domain/repository/product_repository.dart';
@@ -203,7 +206,9 @@ class ProductRepositoryImpl implements ProductRepository {
         starDistribution: starDistribution,
       );
     } catch (e) {
-      print('Error calculating rating for product $productId: $e');
+      if (kDebugMode) {
+        print('Error calculating rating for product $productId: $e');
+      }
       // Return default rating if error
       return ProductRating(
         productId: productId,

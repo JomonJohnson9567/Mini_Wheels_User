@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_wheelz_user/features/domain/entity/address.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/cart_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/cart_state.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/checkout_bloc.dart';
- 
+
 import 'checkout_widgets.dart';
 
-class CheckoutBody extends StatelessWidget {
+class CheckoutBody extends StatefulWidget {
   const CheckoutBody({super.key});
+
+  @override
+  State<CheckoutBody> createState() => _CheckoutBodyState();
+}
+
+class _CheckoutBodyState extends State<CheckoutBody> {
+  Address? selectedAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +29,20 @@ class CheckoutBody extends StatelessWidget {
           builder: (context, checkoutState) {
             return Column(
               children: [
-                Expanded(child: CheckoutOrderSummary(cartState: cartState)),
+                Expanded(
+                  child: CheckoutOrderSummary(
+                    cartState: cartState,
+                    onAddressSelected: (address) {
+                      setState(() {
+                        selectedAddress = address;
+                      });
+                    },
+                  ),
+                ),
                 CheckoutPaymentButton(
                   checkoutState: checkoutState,
                   cartState: cartState,
+                  selectedAddress: selectedAddress,
                 ),
               ],
             );

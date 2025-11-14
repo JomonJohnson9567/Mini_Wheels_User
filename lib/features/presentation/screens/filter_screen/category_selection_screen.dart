@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_wheelz_user/features/core/colors.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/categories_bloc.dart';
 import 'package:mini_wheelz_user/features/presentation/bloc/cubit/category_selection_cubit.dart';
-
 
 class CategorySelectionDialog extends StatelessWidget {
   final List<String> initiallySelected;
@@ -56,12 +56,12 @@ class CategorySelectionDialog extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text("Apply"),
+                child: const Text("Apply", style: TextStyle(color: whiteColor)),
               );
             },
           ),
@@ -97,14 +97,13 @@ class CategorySelectionDialog extends StatelessWidget {
           } else if (catState is CategoriesLoaded) {
             return BlocBuilder<CategorySelectionCubit, CategorySelectionState>(
               builder: (context, state) {
-                final filtered =
-                    catState.all
-                        .where(
-                          (cat) => cat.toLowerCase().contains(
-                            state.searchText.toLowerCase(),
-                          ),
-                        )
-                        .toList();
+                final filtered = catState.all
+                    .where(
+                      (cat) => cat.toLowerCase().contains(
+                        state.searchText.toLowerCase(),
+                      ),
+                    )
+                    .toList();
 
                 if (filtered.isEmpty) {
                   return const Center(child: Text("No matching categories."));
@@ -121,20 +120,20 @@ class CategorySelectionDialog extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      tileColor:
-                          isSelected
-                              ? Colors.orange.withOpacity(0.1)
-                              : Colors.transparent,
+                      tileColor: isSelected
+                          ? primaryColor.withOpacity(0.1)
+                          : Colors.transparent,
                       title: Text(
                         cat,
                         style: TextStyle(
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.normal,
                           color: isSelected ? Colors.deepOrange : Colors.black,
                         ),
                       ),
                       value: isSelected,
-                      activeColor: Colors.orange,
+                      activeColor: primaryColor,
                       onChanged: (_) {
                         context.read<CategorySelectionCubit>().toggleCategory(
                           cat,
