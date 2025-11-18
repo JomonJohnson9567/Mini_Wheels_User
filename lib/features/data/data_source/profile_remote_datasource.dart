@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -32,12 +31,9 @@ class ProfileRemoteDataSource {
       'https://api.cloudinary.com/v1_1/$cloudName/image/upload',
     );
 
-    final request =
-        http.MultipartRequest('POST', url)
-          ..fields['upload_preset'] = uploadPreset
-          ..files.add(
-            await http.MultipartFile.fromPath('file', imageFile.path),
-          );
+    final request = http.MultipartRequest('POST', url)
+      ..fields['upload_preset'] = uploadPreset
+      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
 
     final response = await request.send();
 
